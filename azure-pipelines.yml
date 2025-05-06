@@ -16,20 +16,31 @@ stages:
   jobs:
   - job: BuildAndTestJob
     steps:
+      - script: |
+          echo Checking Maven Installation...
+          where mvn
+          mvn -version
+        displayName: "Verify Maven Installation"
+
       - task: configuration@1
         inputs:
-            connection: 'ankit-LT-connection'
-            #isTunnelActivate: true
-            #tunnelOptions: '{"tunnelName": "ABC"}'
-      - script: |
-          mvn clean install -DskipTests
+          connection: 'ankit-LT-connection'
+          # Uncomment if tunnel is needed
+          # isTunnelActivate: true
+          # tunnelOptions: '{"tunnelName": "ABC"}'
+
+      - task: Maven@3
+        inputs:
+          mavenPomFile: 'pom.xml'
+          goals: 'clean install'
+          options: '-DskipTests'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          mavenVersionOption: 'Default'
+        displayName: "Maven Build (Skip Tests)"
+
       - script: "mvn test -D suite=single.xml"
-        displayName: "Command Line Script"
+        displayName: "Run TestNG Suite"
+
       - task: LambdatestResults@1
-        
-# - stage: LambdatestResults
-#   jobs:
-#   - job: LambdatestResultsJob
-#     steps:
-#       - script: |
-#           echo "Hello"
+        displayName: "Publish LambdaTest Results"
