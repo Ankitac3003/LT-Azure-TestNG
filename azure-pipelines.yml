@@ -3,7 +3,9 @@ trigger:
 
 pool:
   MylocalPool
-
+  #vmImage: ubuntu-latest
+  #MylocalPool
+  
 variables:
   LT_USERNAME: 'ankitclambdatest' 
   LT_ACCESS_KEY: 'LT_OnEL30AtoPH0BkcY83K0VnpQOcfFpX71axsfQgHGLhvNfUP' 
@@ -14,31 +16,20 @@ stages:
   jobs:
   - job: BuildAndTestJob
     steps:
-      - script: |
-          echo Checking Maven Installation...
-          where mvn
-          mvn -version
-        displayName: "Verify Maven Installation"
-
       - task: configuration@1
         inputs:
-          connection: 'ankit-LT-connection'
-          # Uncomment if tunnel is needed
-          # isTunnelActivate: true
-          # tunnelOptions: '{"tunnelName": "ABC"}'
-
-      - task: Maven@3
-        inputs:
-          mavenPomFile: 'pom.xml'
-          goals: 'clean install'
-          options: '-DskipTests'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          mavenVersionOption: 'Default'
-        displayName: "Maven Build (Skip Tests)"
-
+            connection: 'ankit-LT-connection'
+            #isTunnelActivate: true
+            #tunnelOptions: '{"tunnelName": "ABC"}'
+      - script: |
+          mvn clean install -DskipTests
       - script: "mvn test -D suite=single.xml"
-        displayName: "Run TestNG Suite"
-
+        displayName: "Command Line Script"
       - task: LambdatestResults@1
-        displayName: "Publish LambdaTest Results"
+        
+# - stage: LambdatestResults
+#   jobs:
+#   - job: LambdatestResultsJob
+#     steps:
+#       - script: |
+#           echo "Hello"
