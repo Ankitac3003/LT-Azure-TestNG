@@ -2,13 +2,13 @@ trigger:
 - main
 
 pool:
-  azure_local_pool
+  MylocalPool
   #vmImage: ubuntu-latest
   #MylocalPool
   
 variables:
-  LT_USERNAME: ''
-  LT_ACCESS_KEY: ''
+  LT_USERNAME: 'ankitclambdatest'
+  LT_ACCESS_KEY: 'LT_OnEL30AtoPH0BkcY83K0VnpQOcfFpX71axsfQgHGLhvNfUP'
   LT_BUILD_NAME: 'Azure_testng_demo'
 
 stages:
@@ -18,7 +18,7 @@ stages:
     steps:
       - task: configuration@1
         inputs:
-            connection: vaneet-test
+            connection: 'ankit-LT-connection'
             #isTunnelActivate: true
             #tunnelOptions: '{"tunnelName": "ABC"}'
       - script: |
