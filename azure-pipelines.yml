@@ -19,7 +19,6 @@ stages:
             #isTunnelActivate: true
             #tunnelOptions: '{"tunnelName": "ABC"}'
       - script: |
-          mvn -version
           mvn clean install -DskipTests
       - script: "mvn test -D suite=single.xml"
         displayName: "Command Line Script"
